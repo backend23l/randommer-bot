@@ -1,5 +1,5 @@
 import requests
-from randommer import Randommer
+from .randommer import Randommer
 
 
 class Text(Randommer):
@@ -15,7 +15,19 @@ class Text(Randommer):
         Returns:
             str: Lorem text
         '''
-        pass
+        endpoint = "Text/LoremIpsum"
+        url = self.get_url() + endpoint
+        headrs = {
+            "X-Api-Key":api_key
+        }
+        params = {
+            "loremType":loremType,"type":type,"number":number
+        }
+        respons = requests.get(url=url,params=params,headers=headrs)
+        if respons.status_code==200:
+            return respons.json()
+        else:
+            return respons.status_code
     
     def generate_password(self, api_key: str, length: int, hasDigits: bool, hasUppercase: bool, hasSpecial: bool) -> str:
         '''Generate lorem ipsum
@@ -30,4 +42,16 @@ class Text(Randommer):
         Returns:
             str: pasword
         '''
-        pass
+        endpoint = "Text/LoremIpsum"
+        url = self.get_url() + endpoint
+        headrs = {
+            "X-Api-Key":api_key
+        }
+        params = {
+            "length":length,"hasDigits":hasDigits,"hasUppercase":hasUppercase,"hasSpecial":hasSpecial
+        }
+        respons = requests.get(url=url,params=params,headers=headrs)
+        if respons.status_code==200:
+            return respons.json()
+        else:
+            return respons.status_code
