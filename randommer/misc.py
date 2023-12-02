@@ -1,5 +1,5 @@
 import requests
-from randommer import Randommer
+from .randommer import Randommer
 
 
 class Misc(Randommer):
@@ -12,7 +12,16 @@ class Misc(Randommer):
         Returns:
             list: list of cultures
         '''
-        pass
+        endpoint = "Misc/Cultures"
+        url = self.get_url() + endpoint
+        headrs = {
+            "X-Api-Key":api_key
+        }
+        respons = requests.get(url,headers=headrs)
+        if respons.status_code==200:
+            return respons.json()
+        else:
+            return respons.status_code
     
     def get_random_address(self, api_key: str, number: int, culture='en') -> list:
         '''get available misc cultures
@@ -25,4 +34,16 @@ class Misc(Randommer):
         Returns:
             list: random address
         '''
-        pass
+        endpoint = "Misc/Random-Address"
+        url = self.get_url() + endpoint
+        payload = {
+            "number":number,"culture":culture
+        }
+        headrs = {
+            "X-Api-Key":api_key
+        }
+        respons = requests.get(url=url,params=payload,headers=headrs)
+        if respons.status_code==200:
+            return respons.json()
+        else:
+            return respons.status_code

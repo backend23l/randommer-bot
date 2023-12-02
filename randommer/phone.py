@@ -1,5 +1,5 @@
 import requests
-from randommer import Randommer
+from .randommer import Randommer
 
 
 class Phone(Randommer):
@@ -14,8 +14,20 @@ class Phone(Randommer):
         Returns:
             list: list of phone numbers
         '''
-        pass
-    
+        endpoint = "Phone/Generate"
+        url = self.get_url() + endpoint
+        headrs = {
+            "X-Api-Key":api_key
+        }
+        params = {
+            "CountryCode":CountryCode,"Quantity":Quantity
+        }
+        respons = requests.get(url=url,params=params,headers=headrs)
+        if respons.status_code==200:
+            return respons.json()
+        else:
+            return respons.status_code
+        
     def get_IMEI(self, api_key: str, Quantity: int) -> list:
         '''get bulk imei
 
@@ -26,7 +38,19 @@ class Phone(Randommer):
         Returns:
             list: list of phone numbers
         '''
-        pass
+        endpoint = "Phone/IMEI"
+        url = self.get_url() + endpoint
+        headrs = {
+            "X-Api-Key":api_key
+        }
+        params = {
+            "Quantity":Quantity
+        }
+        respons = requests.get(url=url,params=params,headers=headrs)
+        if respons.status_code==200:
+            return respons.json()
+        else:
+            return respons.status_code
     
     def is_valid(self, api_key: str, telephone: str, CountryCode: str) -> bool:
         '''get bulk imei
@@ -39,7 +63,19 @@ class Phone(Randommer):
         Returns:
             bool: is valid
         '''
-        pass
+        endpoint = "Phone/Validate"
+        url = self.get_url() + endpoint
+        headrs = {
+            "X-Api-Key":api_key
+        }
+        params = {
+            "telephone":telephone,"CountryCode":CountryCode
+        }
+        respons = requests.get(url=url,params=params,headers=headrs)
+        if respons.status_code==200:
+            return respons.json()
+        else:
+            return respons.status_code
     
     def get_countries(self, api_key: str) -> list:
         '''get countries
@@ -50,4 +86,12 @@ class Phone(Randommer):
         Returns:
             list: lsit of countries
         '''
-        pass
+        endpoint = "Phone/Countries"
+        url = self.get_url() + endpoint
+        headrs = {
+            "X-Api-Key":api_key
+        }
+        respons = requests.get(url=url,headers=headrs)
+        if respons.status_code==200:
+            return respons.json()
+        return respons.status_code
