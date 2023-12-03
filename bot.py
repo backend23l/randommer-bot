@@ -51,7 +51,6 @@ def send_message(url:str,chat_id:int,text:str):
         "text":text,
         "parse_mode":"HTML"
     }
-    requests.get(url,params=payload)
 def main(url:str):
     last_update_id = -1 
     card = Card()
@@ -71,35 +70,35 @@ def main(url:str):
             elif text == "/start":
                 send_message(url,user['id'],mseg)
             elif text == "/card":
-                advic_car = card.get_card(api_key)['Card']
+                advic_car = card.get_card(api_key)['cardNumber']
                 send_message(url,user['id'],advic_car)
             elif text=="/finance":
                 crypto_type = "Argoneum"
-                advic_finc = finance.get_crypto_address(crypto_type,api_key)['Finance/CryptoAddress']
+                advic_finc = finance.get_crypto_address(crypto_type,api_key)['address']
                 send_message(url,user['id'],advic_finc)
             elif text == "/misc":
                 number = 5
-                advic_misc = misc.get_random_address(api_key=api_key,number=number,culture="en")["Misc/Random-Address"]
+                advic_misc = misc.get_random_address(api_key=api_key,number=number,culture="en")
                 send_message(url,user['id'],advic_misc)
             elif text == "/name":
                 quantitiy = 1
                 nametype = "fullname"
-                advic_name = name.get_name(api_key=api_key,nameType=nametype,quantity=quantitiy)["Name"]
+                advic_name = name.get_name(api_key=api_key,nameType=nametype,quantity=quantitiy)
                 send_message(url,user['id'],advic_name)
             elif text == "/phone":
                 countrycode = "US"
                 soni = 5
-                advic_phon = phone.generate(api_key=api_key,CountryCode=countrycode,Quantity=soni)["Phone/Generate"]
+                advic_phon = phone.generate(api_key=api_key,CountryCode=countrycode,Quantity=soni)
                 send_message(url,user['id'],advic_phon)
             elif text == "/social_number":
-                advic_social = socialnumber.get_SocialNumber(api_key=api_key)["SocialNumber"]
+                advic_social = socialnumber.get_SocialNumber(api_key=api_key)
                 send_message(url,user['id'],advic_social)
             elif text == "/text":
                 loremtype = "normal"
                 type = "words"
                 number = 20
                 advic_text = word.generate_LoremIpsum(api_key=api_key,loremType=loremtype,type=type,number=number)
-                send_message(url,user['id'],advic_text)["Text/LoremIpsum"]
+                send_message(url,user['id'],advic_text)
             else:
                 send_message(url,user['id'],"Hato ma'lumot yuborildi !!!")
             last_update_id = curer_update['update_id']
