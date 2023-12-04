@@ -51,6 +51,7 @@ def send_message(url:str,chat_id:int,text:str):
         "text":text,
         "parse_mode":"HTML"
     }
+    requests.get(url,params=payload)
 def main(url:str):
     last_update_id = -1 
     card = Card()
