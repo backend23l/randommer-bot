@@ -1,5 +1,6 @@
-from settings import url,api_key
+from settings import url,api_key,card_msg
 import requests
+from datetime import datetime
 from randommer.card import Card
 from randommer.finance import Finance
 from randommer.misc import Misc
@@ -43,14 +44,16 @@ def echoobot_updets(url:str):
     else:
         return respons.status_code
 print(echoobot_updets(url))
-def send_message(url:str,chat_id:int,text:str):
+def send_message(url:str,chat_id:int,text:str,mode=False):
     endpoint = "/sendMessage"
     url+=endpoint
     payload = {
         "chat_id":chat_id,
         "text":text,
-        "parse_mode":"HTML"
     }
+    if mode:
+        payload["parse_mode"] = 'HTML'
+    
     requests.get(url,params=payload)
 def main(url:str):
     last_update_id = -1 
@@ -71,8 +74,17 @@ def main(url:str):
             elif text == "/start":
                 send_message(url,user['id'],mseg)
             elif text == "/card":
-                advic_car = card.get_card(api_key)['cardNumber']
-                send_message(url,user['id'],advic_car)
+                advic_car = card.get_card(api_key)
+                date = datetime.fromisoformat(advic_car['date'])
+                msg_card = card_msg.format(
+                    type = advic_car['type'],
+                    fullName = advic_car['fullName'],
+                    cardNumber = advic_car['cardNumber'],
+                    cvv = advic_car['cvv'],
+                    pin = advic_car['pin'],
+                    date = date.strftime("%Y-%m-%d")
+                )
+                send_message(url,user['id'],msg_card)
             elif text=="/finance":
                 crypto_type = "Argoneum"
                 advic_finc = finance.get_crypto_address(crypto_type,api_key)['address']
@@ -87,7 +99,7 @@ def main(url:str):
                 advic_name = name.get_name(api_key=api_key,nameType=nametype,quantity=quantitiy)
                 send_message(url,user['id'],advic_name)
             elif text == "/phone":
-                countrycode = "US"
+                countrycode = "UZ"
                 soni = 5
                 advic_phon = phone.generate(api_key=api_key,CountryCode=countrycode,Quantity=soni)
                 send_message(url,user['id'],advic_phon)
